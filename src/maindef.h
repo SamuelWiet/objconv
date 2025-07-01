@@ -104,7 +104,7 @@ static inline uint32 HighDWord (uint64 x) {
 
 // Structure of integers and char *, used for tables of text strings
 struct SIntTxt {
-   int a;
+   unsigned int a;
    const char * b;
 };
 

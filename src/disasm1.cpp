@@ -813,7 +813,7 @@ void CDisassembler::Pass1() {
         else {
             // This is a data section
             // Make a single entry in FunctionList covering the whole section
-            SFunctionRecord fun = {Section, 0, Sections[Section].TotalSize, 0, 0};
+            SFunctionRecord fun = {(int)Section, 0, Sections[Section].TotalSize, 0, 0};
             FunctionList.PushUnique(fun);
         }
     }

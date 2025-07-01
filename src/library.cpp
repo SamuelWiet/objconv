@@ -1521,7 +1521,21 @@ void CLibrary::MakeSymbolTableUnix() {
          // Unsorted table. "__.SYMDEF" stored as short name
          memcpy(SymTab.Name, "__.SYMDEF       ", 16);
          // Put file size into symbol table header
-         sprintf(SymTab.FileSize, "%u", Index3Size);
+         char buffer[32];
+         // Use sprintf to convert number to string
+         // Note: sprintf is not safe, but we know the size of Index3Size
+         sprintf(buffer, "%u", Index3Size);
+         if (strlen(buffer) < sizeof(SymTab.FileSize)) {
+            // Copy to file size field
+            memcpy(SymTab.FileSize, buffer, strlen(buffer)+1); // +1 for terminating zero
+         }
+         else {   
+            fprintf(stderr, "Error: Index3Size %u is too big for SymTab.FileSize field.\n", Index3Size);
+            err.submit(9000);
+            return;
+         }  
+         // sprintf(SymTab.FileSize, "%u", Index3Size);
+         // snprintf(SymTab.FileSize, sizeof(SymTab.FileSize), "%u", Index3Size);
       }
 
       // Remove terminating zeroes
